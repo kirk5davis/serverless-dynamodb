@@ -8,6 +8,11 @@ custom:
     app: app.app
   pythonRequirements:
     dockerizePip: true
+  dynamodb:
+    start:
+      migrate: true
+    stages:
+      - dev
 
 useDotenv: true
 
@@ -40,7 +45,7 @@ functions:
 plugins:
   - serverless-wsgi
   - serverless-python-requirements
-
+  - serverless-dynamodb-local
 resources:
   Resources:
     UsersTable:
