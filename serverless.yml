@@ -9,15 +9,21 @@ custom:
   pythonRequirements:
     dockerizePip: true
   dynamodb:
-    start:
-      migrate: true
     stages:
       - dev
+    start:
+      docker: true
+      port: 8000
+      inMemory: true
+      migrate: true
+      seed: true
+      convertEmptyValues: true
 
 useDotenv: true
 
 provider:
   name: aws
+  region: us-east-2
   runtime: python3.9
   stage: dev
   iam:

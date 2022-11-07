@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>POST Request</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            <h1 class="title">
+                DynamoDB POST Request
+            </h1>
+            <p class="subtitle">
+                Fill out the form to submit a POST request with name and username to DynamoDB:
+            </p>
+            <form id="inputForm" onsubmit="return false">
+                <div class="field">
+                    <label class="label">Name</label>
+                    <div class="control">
+                        <input id="name" name="name" class="input" type="text" placeholder="Name input" required />
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Username</label>
+                    <div class="control">
+                        <input id="userId" name="userId" class="input" type="text" placeholder="Username input"
+                            required />
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <button onclick="postData()" class="button is-link">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <script>
+        function postData() {
+            var form = document.getElementById('inputForm');
+            var data = new FormData(form);
+            console.log(JSON.stringify(Object.fromEntries(data.entries())));
+
+            // init fetch
+            fetch("/users", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(Object.fromEntries(data.entries()))
+            })
+
+                // response
+                .then((result) => {
+                    if (result.status != 200) { throw new Error("bad server response"); }
+                    return result.text
+                })
+
+                // response
+                .then((response) => {
+                    console.log(response);
+                })
+
+                // handle errors
+                .catch((error) => { console.log(error); });
+
+            // prevent form submit
+            return false;
+        }
+    </script>
+</body>
+
+</html>
